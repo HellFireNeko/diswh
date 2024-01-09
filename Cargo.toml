@@ -8,6 +8,7 @@ edition = "2021"
 authors = ["HellFireNeko"]
 readme = "README.md"
 license = "CC0-1.0"
+repository = "https://github.com/HellFireNeko/diswh"
 
 [dependencies]
 curl = "0.4.44"
