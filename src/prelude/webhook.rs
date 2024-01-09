@@ -1,4 +1,5 @@
 use super::{EditMessagePacket, MessagePacket};
+use curl::easy::Easy;
 
 #[derive(Clone)]
 pub struct WebhookBuilder {
