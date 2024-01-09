@@ -1,10 +1,13 @@
 [package]
 name = "diswh"
+description = """
+A simple way to send webhook messages, or edit for discord. Fully featured with builders to make things easy!
+"""
 version = "0.1.0"
 edition = "2021"
 authors = ["HellFireNeko"]
 readme = "README.md"
-license = "CC0-1.0 license"
+license = "CC0-1.0"
 license-file = "LICENSE"
 
 [dependencies]
