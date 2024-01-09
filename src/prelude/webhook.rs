@@ -39,9 +39,9 @@ impl WebhookBuilder {
         match response {
             Ok(res) => {
                 if res.status().is_success() {
-                    
+                    println!("Sent message to discord!")
                 } else {
-                    
+                    eprintln!("Status was not success! {}", res.status());
                 }
             }
             Err(err) => {
@@ -69,7 +69,6 @@ impl WebhookBuilder {
     fn send_packet(url: &str, patch: bool, packet: &str) {
         use reqwest::blocking::Client;
 
-        // Example code to send the packet using reqwest
         let client = Client::new();
         let response = if patch {
             client.patch(url).body(packet.to_owned()).send()
@@ -77,18 +76,15 @@ impl WebhookBuilder {
             client.post(url).body(packet.to_owned()).send()
         };
 
-        // Handle the response as needed
         match response {
             Ok(res) => {
-                // Handle success
                 if res.status().is_success() {
-                    // Do something with the successful response
+                    println!("Sent message to discord!")
                 } else {
-                    // Handle non-successful response
+                    eprintln!("Status was not success! {}", res.status());
                 }
             }
             Err(err) => {
-                // Handle the error
                 eprintln!("Error sending packet: {:?}", err);
             }
         }
