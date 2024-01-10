@@ -1,4 +1,4 @@
-pub struct Color {}
+pub struct Color;
 
 impl Color {
     pub const DEFAULT: i32 = 0;

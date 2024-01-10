@@ -21,22 +21,22 @@ impl MessageBuilder {
         }
     }
 
-    pub fn with_username(&mut self, username: impl Into<String>) -> Self {
+    pub fn with_username(mut self, username: impl Into<String>) -> Self {
         self.message.username = username.into();
-        self.clone()
+        self
     }
 
-    pub fn with_avatar_url(&mut self, avatar_url: impl Into<String>) -> Self {
+    pub fn with_avatar_url(mut self, avatar_url: impl Into<String>) -> Self {
         self.message.avatar_url = avatar_url.into();
-        self.clone()
+        self
     }
 
-    pub fn add_embed(&mut self, embed: Embed) -> Self {
+    pub fn add_embed(mut self, embed: Embed) -> Self {
         self.message.embeds.push(embed);
-        self.clone()
+        self
     }
 
-    pub fn build(&self) -> MessagePacket {
-        self.message.clone()
+    pub fn build(self) -> MessagePacket {
+        self.message
     }
 }

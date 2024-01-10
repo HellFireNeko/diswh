@@ -1,5 +1,6 @@
+use reqwest::header;
+
 use super::{EditMessagePacket, MessagePacket};
-use curl::easy::Easy;
 
 #[derive(Clone)]
 pub struct WebhookBuilder {
@@ -12,31 +13,87 @@ impl WebhookBuilder {
     }
 }
 
+#[cfg(feature = "async")]
 impl WebhookBuilder {
-    pub fn send_message(&self, packet: MessagePacket) -> Self {
-        WebhookBuilder::send_packet(&self.url.clone(), false, &packet.serialize_packet());
-        self.clone()
+    pub async fn send_message_async(self, packet: MessagePacket) -> Result<Self, reqwest::Error> {
+        WebhookBuilder::send_packet_async(&self.url.clone(), false, &packet.serialize_packet()).await?;
+        Ok(self)
     }
 
-    pub fn edit_message(&self, packet: EditMessagePacket, id: usize) -> Self {
-        WebhookBuilder::send_packet(&(self.url.clone() + &format!("/messages/{}", id)), true, &packet.serialize_packet());
-        self.clone()
+    pub async fn edit_message_async(
+        self,
+        packet: EditMessagePacket,
+        id: usize,
+    ) -> Result<Self, reqwest::Error> {
+        WebhookBuilder::send_packet_async(
+            &(self.url.clone() + &format!("/messages/{}", id)),
+            true,
+            &packet.serialize_packet(),
+        ).await?;
+        Ok(self)
     }
 
-    fn send_packet(url: &str, patch: bool, packet: &str) {
-        let mut easy = Easy::new();
-        easy.url(url).unwrap();
+    async fn send_packet_async(url: &str, patch: bool, packet: &str) -> Result<(), reqwest::Error> {
+        let client = reqwest::Client::new();
 
-        let mut headers = curl::easy::List::new();
-        headers.append("Content-Type: application/json").unwrap();
-        easy.http_headers(headers).unwrap();
+        let packet = packet.to_string();
 
         if patch {
-            easy.custom_request("PATCH").unwrap();
+            client
+                .patch(url)
+                .header(header::CONTENT_TYPE, "application/json")
+                .body(packet)
+                .send().await?;
+        } else {
+            client
+                .post(url)
+                .header(header::CONTENT_TYPE, "application/json")
+                .body(packet)
+                .send().await?;
         }
 
-        easy.post_fields_copy(packet.as_bytes()).unwrap();
+        Ok(())
+    }
+}
 
-        easy.perform().unwrap();
+impl WebhookBuilder {
+    pub fn send_message(self, packet: MessagePacket) -> Result<Self, reqwest::Error> {
+        WebhookBuilder::send_packet(&self.url.clone(), false, &packet.serialize_packet())?;
+        Ok(self)
+    }
+
+    pub fn edit_message(
+        self,
+        packet: EditMessagePacket,
+        id: usize,
+    ) -> Result<Self, reqwest::Error> {
+        WebhookBuilder::send_packet(
+            &(self.url.clone() + &format!("/messages/{}", id)),
+            true,
+            &packet.serialize_packet(),
+        )?;
+        Ok(self)
+    }
+
+    fn send_packet(url: &str, patch: bool, packet: &str) -> Result<(), reqwest::Error> {
+        let client = reqwest::blocking::Client::new();
+
+        let packet = packet.to_string();
+
+        if patch {
+            client
+                .patch(url)
+                .header(header::CONTENT_TYPE, "application/json")
+                .body(packet)
+                .send()?;
+        } else {
+            client
+                .post(url)
+                .header(header::CONTENT_TYPE, "application/json")
+                .body(packet)
+                .send()?;
+        }
+
+        Ok(())
     }
 }

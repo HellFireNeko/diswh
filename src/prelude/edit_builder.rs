@@ -18,12 +18,12 @@ impl EditMessageBuilder {
         }
     }
 
-    pub fn add_embed(&mut self, embed: Embed) -> Self {
+    pub fn add_embed(mut self, embed: Embed) -> Self {
         self.message.embeds.push(embed);
-        self.clone()
+        self
     }
 
-    pub fn build(&self) -> EditMessagePacket {
-        self.message.clone()
+    pub fn build(self) -> EditMessagePacket {
+        self.message
     }
 }

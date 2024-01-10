@@ -37,7 +37,7 @@ pub struct EmbedField {
 pub struct Embed {
     pub title: Option<String>,
     #[serde(rename = "type")]
-    pub embed_type: String,
+    embed_type: String,
     pub description: Option<String>,
     pub url: Option<String>,
     pub color: i32,
@@ -48,4 +48,45 @@ pub struct Embed {
     pub provider: EmbedProvider,
     pub author: EmbedAuthor,
     pub fields: Vec<EmbedField>,
+}
+
+impl Embed {
+    pub fn new() -> Self {
+        Embed {
+            title: None,
+            embed_type: "rich".to_string(),
+            description: None,
+            url: None,
+            color: 0,
+            footer: EmbedFooter {
+                text: None,
+                icon_url: None,
+            },
+            image: EmbedMultimedia {
+                url: None,
+                height: None,
+                width: None,
+            },
+            thumbnail: EmbedMultimedia {
+                url: None,
+                height: None,
+                width: None,
+            },
+            video: EmbedMultimedia {
+                url: None,
+                height: None,
+                width: None,
+            },
+            provider: EmbedProvider {
+                name: None,
+                url: None,
+            },
+            author: EmbedAuthor {
+                name: None,
+                url: None,
+                icon_url: None,
+            },
+            fields: Vec::new(),
+        }
+    }
 }
