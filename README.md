@@ -20,7 +20,7 @@ Or for Async use:
 ```rs
 use diswh::{MessageBuilder, WebhookBuilder};
 
-fn main() -> Result<(), std::error::Error> {
+async fn main() -> Result<(), std::error::Error> {
     WebhookBuilder::new("url")
         .send_message_async(
             MessageBuilder::new("Hello webhook!", false).build()
