@@ -7,11 +7,11 @@ use crate::Embed;
 
 #[derive(Clone, Serialize)]
 pub struct MessagePacket {
-    pub content: String,
-    pub username: String,
-    pub avatar_url: String,
-    pub tts: bool,
-    pub embeds: Vec<Embed>,
+    pub(crate) content: String,
+    pub(crate) username: String,
+    pub(crate) avatar_url: String,
+    pub(crate) tts: bool,
+    pub(crate) embeds: Vec<Embed>,
 }
 
 impl MessagePacket {

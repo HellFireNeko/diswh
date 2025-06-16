@@ -26,6 +26,24 @@ impl Color {
     pub const DARK_NAVY: i32 = 2899536;
     pub const YELLOW: i32 = 16776960;
 
+    /// Converts a hexadecimal color string (e.g., `"FF0000"`) to its integer representation.
+    ///
+    /// # Arguments
+    ///
+    /// * `hex_val` - A string slice representing the hexadecimal color value (uppercase, without `#`).
+    ///
+    /// # Returns
+    ///
+    /// An `i32` representing the color as an integer.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use diswh::Color;
+    /// 
+    /// let red = Color::from_hex("FF0000");
+    /// assert_eq!(red, 16711680);
+    /// ```
     pub fn from_hex(hex_val: &str) -> i32 {
         let len: usize = hex_val.len();
         let mut base: i32 = 1;

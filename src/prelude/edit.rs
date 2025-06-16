@@ -7,8 +7,8 @@ use crate::Embed;
 
 #[derive(Clone, Serialize)]
 pub struct EditMessagePacket {
-    pub content: String,
-    pub embeds: Vec<Embed>,
+    pub(crate) content: String,
+    pub(crate) embeds: Vec<Embed>,
 }
 
 impl EditMessagePacket {
